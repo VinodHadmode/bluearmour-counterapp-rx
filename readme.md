@@ -1,5 +1,4 @@
 
-```markdown
 # Counter App
 
 A simple and interactive **Counter App** built with **React**, using **RxJS** for state management and **TailwindCSS** for styling. The app allows users to increment, decrement, and reset a counter, as well as toggle auto-increment functionality.
