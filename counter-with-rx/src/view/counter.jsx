@@ -1,12 +1,15 @@
+// src/view/counter.js
 import React, { useEffect, useState } from 'react';
 import { onIncrement, onDecrement, onReset, onToggleAutoIncrement } from '../intent/counterIntent';
 import { count$, autoIncrementEnabled$ } from '../model/counterModel';
+import { LuRefreshCw } from 'react-icons/lu';
 
 const Counter = () => {
   const [count, setCount] = useState(0);
   const [isAutoIncrementEnabled, setAutoIncrementState] = useState(false);
 
   useEffect(() => {
+    // Subscribe to the count observable to update the count
     const countSubscription = count$.subscribe(setCount);
     const autoIncrementStateSubscription = autoIncrementEnabled$.subscribe(setAutoIncrementState);
 
@@ -19,30 +22,47 @@ const Counter = () => {
 
   // Handle toggle for auto increment
   const handleToggleAutoIncrement = () => {
-    onToggleAutoIncrement(isAutoIncrementEnabled);  
+    onToggleAutoIncrement(isAutoIncrementEnabled);  // Pass current state directly
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="text-center p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold mb-4">Counter App</h1>
-        <div className="text-4xl font-semibold mb-4">{count}</div>
+    <div className="flex flex-col gap-10 items-center justify-center min-h-screen bg-white">
 
-        <div className="flex space-x-4 mb-4">
-          <button onClick={onIncrement} className="px-4 py-2 bg-blue-500 text-white rounded">+</button>
-          <button onClick={onDecrement} className="px-4 py-2 bg-red-500 text-white rounded">-</button>
-        </div>
+      <p className="text-6xl text-black font-bold mb-10">{count}</p>
 
-        <div className="mb-4">
-          <button onClick={onReset} className="px-4 py-2 bg-gray-500 text-white rounded">Reset</button>
-        </div>
+      <div className="flex space-x-6 gap-10">
+        <button
+          onClick={onIncrement}
+          className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-200 text-black text-3xl font-semibold shadow-md hover:bg-gray-300 transition"
+        >
+          +
+        </button>
+        <button
+          onClick={onReset}
+          className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-200 text-black text-3xl font-semibold shadow-md hover:bg-gray-300 transition"
+        >
+          <LuRefreshCw size={25} />
+        </button>
 
-        <div>
-          <button onClick={handleToggleAutoIncrement} 
-                  className={`px-4 py-2 ${isAutoIncrementEnabled ? 'bg-green-500' : 'bg-yellow-500'} text-white rounded`}>
-            {isAutoIncrementEnabled ? 'Disable Auto Increment' : 'Enable Auto Increment'}
-          </button>
-        </div>
+        <button
+          onClick={onDecrement}
+          className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-200 text-black text-3xl font-semibold shadow-md hover:bg-gray-300 transition"
+        >
+          -
+        </button>
+      </div>
+
+      <div className="flex items-center space-x-5 gap-10">
+        <p className="text-lg text-black">Auto Increment</p>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isAutoIncrementEnabled}
+            onChange={handleToggleAutoIncrement}
+            className="sr-only peer"
+          />
+          <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gray-500 rounded-full peer peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+        </label>
       </div>
     </div>
   );
