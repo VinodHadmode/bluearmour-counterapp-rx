@@ -1,4 +1,3 @@
-// src/view/counter.js
 import React, { useEffect, useState } from 'react';
 import { onIncrement, onDecrement, onReset, onToggleAutoIncrement } from '../intent/counterIntent';
 import { count$, autoIncrementEnabled$ } from '../model/counterModel';
@@ -9,20 +8,17 @@ const Counter = () => {
   const [isAutoIncrementEnabled, setAutoIncrementState] = useState(false);
 
   useEffect(() => {
-    // Subscribe to the count observable to update the count
     const countSubscription = count$.subscribe(setCount);
     const autoIncrementStateSubscription = autoIncrementEnabled$.subscribe(setAutoIncrementState);
 
-    // Cleanup on unmount
     return () => {
       countSubscription.unsubscribe();
       autoIncrementStateSubscription.unsubscribe();
     };
   }, []);
 
-  // Handle toggle for auto increment
   const handleToggleAutoIncrement = () => {
-    onToggleAutoIncrement(isAutoIncrementEnabled);  // Pass current state directly
+    onToggleAutoIncrement(isAutoIncrementEnabled);  
   };
 
   return (
